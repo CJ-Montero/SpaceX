@@ -1,0 +1,10 @@
+<div class="min-h-screen flex items-center justify-center">
+     <form class="bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md" (ngSubmit)="onLogin()">
+       <h2 class="text-2xl font-bold mb-4 text-center">SpaceX Login</h2>
+       <input type="text" [(ngModel)]="username" name="username" placeholder="Usuario" class="w-full mb-4" required>
+       <input type="password" [(ngModel)]="password" name="password" placeholder="Contraseña" class="w-full mb-4" required>
+       <button type="submit" class="w-full">Iniciar Sesión</button>
+       <p *ngIf="error" class="text-red-500 mt-2 text-center">Credenciales incorrectas</p>
+       <button type="button" (click)="setTestUser()" class="w-full mt-4 bg-gray-600 hover:bg-gray-700">Usar Admin/Admin</button>
+     </form>
+   </div>

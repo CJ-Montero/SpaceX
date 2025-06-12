@@ -3,9 +3,21 @@
     <button (click)="getRandomLaunch()" class="bg-orange-600 hover:bg-orange-700">Lanzamiento Aleatorio</button>
     <button (click)="listRockets()" class="bg-orange-600 hover:bg-orange-700">Cohetes</button>
   </div>
-  <div class="flex items-center space-x-2">
-    <input type="text" [(ngModel)]="missionName" placeholder="Buscar misión" class="w-64 bg-gray-800 border-gray-600">
+  <div class="flex items-center space-x-2 relative">
+    <input
+      type="text"
+      [(ngModel)]="missionName"
+      (input)="onInputChange()"
+      (blur)="suggestions = []"
+      placeholder="Buscar misión"
+      class="w-64 bg-gray-800 border-gray-600"
+    >
     <button (click)="searchMission()" class="bg-orange-600 hover:bg-orange-700">Buscar</button>
+    <div *ngIf="suggestions.length > 0" class="absolute top-full left-0 w-64 bg-gray-800 border border-gray-600 mt-1 rounded shadow-lg z-10">
+      <div *ngFor="let suggestion of suggestions" class="p-2 hover:bg-gray-700 cursor-pointer" (click)="selectSuggestion(suggestion); $event.stopPropagation()">
+        {{ suggestion }}
+      </div>
+    </div>
   </div>
   <a routerLink="/settings" class="text-orange-600 hover:underline">Configuración</a>
 </nav>

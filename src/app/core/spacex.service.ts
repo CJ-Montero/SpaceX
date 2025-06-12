@@ -29,11 +29,28 @@ export class SpacexService {
         ]
       },
       options: {
-        limit: 5, // Aumenta para ver más resultados
+        limit: 5,
         sort: { date_utc: -1 }
       }
     }).pipe(
       map(response => response.docs[0] || null)
+    );
+  }
+
+  getLaunchSuggestions(query: string): Observable<string[]> {
+    return this.http.post<{ docs: Launch[] }>(`${this.baseUrl}/launches/query`, {
+      query: {
+        $or: [
+          { name: { $regex: query, $options: 'i' } },
+          { 'payloads.name': { $regex: query, $options: 'i' } }
+        ]
+      },
+      options: {
+        limit: 10,
+        sort: { date_utc: -1 }
+      }
+    }).pipe(
+      map(response => response.docs.map(doc => doc.name).filter(name => name !== undefined))
     );
   }
 }

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -11,12 +11,20 @@ import { Launch, Rocket } from '../models/spacex.models';
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './home.component.html'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   missionName: string = '';
   data: Launch | Rocket[] | null = null;
   suggestions: string[] = [];
+  selectedRocket: string = '';
+  filteredRockets: Rocket[] = [];
+  rocketMenuOpen: boolean = false;
+  selectedRocketDetails: Rocket | null = null;
 
   constructor(private spacexService: SpacexService, private cdr: ChangeDetectorRef) {}
+
+  ngOnInit() {
+    this.listRockets(); // Cargar cohetes al iniciar
+  }
 
   isRocketArray(data: Launch | Rocket[] | null): data is Rocket[] {
     return Array.isArray(data);
@@ -34,8 +42,13 @@ export class HomeComponent {
   }
 
   listRockets() {
+    console.log('Cargando cohetes...');
     this.spacexService.getRockets().subscribe({
-      next: (res: Rocket[]) => this.data = res,
+      next: (res: Rocket[]) => {
+        console.log('Datos de cohetes recibidos:', res);
+        this.data = res;
+        this.filterRocket();
+      },
       error: (err: any) => console.error('Error fetching rockets:', err)
     });
   }
@@ -59,9 +72,36 @@ export class HomeComponent {
   }
 
   selectSuggestion(suggestion: string) {
-    this.missionName = suggestion; // Actualiza el valor
-    this.suggestions = [];         // Limpia las sugerencias
-    this.cdr.detectChanges();      // Forza la actualización del DOM
-    this.searchMission();          // Realiza la búsqueda automáticamente
+    this.missionName = suggestion;
+    this.suggestions = [];
+    this.cdr.detectChanges();
+    this.searchMission();
+  }
+
+  filterRocket() {
+    if (this.isRocketArray(this.data)) {
+      if (this.selectedRocket) {
+        this.filteredRockets = this.data.filter(rocket => rocket.name === this.selectedRocket);
+      } else {
+        this.filteredRockets = [...this.data];
+      }
+    }
+  }
+
+  toggleRocketMenu() {
+    this.rocketMenuOpen = !this.rocketMenuOpen;
+  }
+
+  selectRocket(rocket: string) {
+    this.selectedRocket = rocket;
+    this.rocketMenuOpen = false;
+    this.filterRocket();
+    if (this.isRocketArray(this.data) && this.selectedRocket) {
+      this.selectedRocketDetails = this.data.find(r => r.name === this.selectedRocket) || null;
+      console.log('Detalles del cohete seleccionado:', this.selectedRocketDetails);
+    } else {
+      this.selectedRocketDetails = null;
+    }
+    this.cdr.detectChanges();
   }
 }

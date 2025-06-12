@@ -1,8 +1,16 @@
 <nav class="flex justify-between items-center p-4 bg-black bg-opacity-80 shadow-lg">
-  <div class="space-x-4">
-    <button (click)="getRandomLaunch()" class="bg-orange-600 hover:bg-orange-700">Lanzamiento Aleatorio</button>
-    <button (click)="listRockets()" class="bg-orange-600 hover:bg-orange-700">Cohetes</button>
+  <div class="space-x-4 flex items-center relative">
+    <button (click)="toggleRocketMenu()" class="bg-orange-600 hover:bg-orange-700 px-3 py-1 rounded flex items-center" [class.active]="rocketMenuOpen">
+      Cohetes <span class="ml-2">▼</span>
+    </button>
+    <div *ngIf="rocketMenuOpen" class="absolute top-full left-0 mt-1 w-40 bg-gray-800 border border-gray-600 rounded shadow-lg z-10">
+      <div (click)="selectRocket('')" class="p-2 hover:bg-gray-700 cursor-pointer" [class.selected]="!selectedRocket">Todos</div>
+      <div (click)="selectRocket('Falcon 9')" class="p-2 hover:bg-gray-700 cursor-pointer" [class.selected]="selectedRocket === 'Falcon 9'">Falcon 9</div>
+      <div (click)="selectRocket('Falcon Heavy')" class="p-2 hover:bg-gray-700 cursor-pointer" [class.selected]="selectedRocket === 'Falcon Heavy'">Falcon Heavy</div>
+    </div>
+    <button (click)="getRandomLaunch()" class="bg-orange-600 hover:bg-orange-700 px-3 py-1 rounded">Lanzamiento Aleatorio</button>
   </div>
+
   <div class="flex items-center space-x-2 relative">
     <input
       type="text"
@@ -10,18 +18,21 @@
       (input)="onInputChange()"
       (blur)="suggestions = []"
       placeholder="Buscar misión"
-      class="w-64 bg-gray-800 border-gray-600"
+      class="w-64 bg-gray-800 border border-gray-600 text-white rounded px-2 py-1"
     >
-    <button (click)="searchMission()" class="bg-orange-600 hover:bg-orange-700">Buscar</button>
+    <button (click)="searchMission()" class="bg-orange-600 hover:bg-orange-700 px-3 py-1 rounded">Buscar</button>
     <div *ngIf="suggestions.length > 0" class="absolute top-full left-0 w-64 bg-gray-800 border border-gray-600 mt-1 rounded shadow-lg z-10">
       <div *ngFor="let suggestion of suggestions" class="p-2 hover:bg-gray-700 cursor-pointer" (click)="selectSuggestion(suggestion); $event.stopPropagation()">
         {{ suggestion }}
       </div>
     </div>
   </div>
+
   <a routerLink="/settings" class="text-orange-600 hover:underline">Configuración</a>
 </nav>
+
 <div class="p-6">
+  <!-- Lanzamiento -->
   <div *ngIf="isLaunch(data)" class="bg-gray-800 p-6 rounded-lg shadow-lg">
     <h2 class="text-2xl font-bold mb-4">{{ data.name }}</h2>
     <p><strong>Fecha:</strong> {{ data.date_utc | date:'medium' }}</p>
@@ -30,14 +41,33 @@
     <img *ngIf="data.links?.patch?.small" [src]="data.links.patch.small" alt="Mission Patch" class="w-32 h-32 mt-4 rounded">
     <a *ngIf="data.links?.webcast" [href]="data.links.webcast" target="_blank" class="text-orange-600 hover:underline">Ver Webcast</a>
   </div>
-  <div *ngIf="isRocketArray(data)" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div *ngFor="let rocket of data" class="bg-gray-800 p-6 rounded-lg shadow-lg">
+
+  <!-- Cohetes (vista de lista) -->
+  <div *ngIf="isRocketArray(data) && !selectedRocketDetails" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div *ngFor="let rocket of filteredRockets" class="bg-gray-800 p-6 rounded-lg shadow-lg">
       <h3 class="text-xl font-bold mb-2">{{ rocket.name }}</h3>
       <p><strong>Descripción:</strong> {{ rocket.description }}</p>
       <p><strong>Altura:</strong> {{ rocket.height.meters }} m</p>
       <p><strong>Diámetro:</strong> {{ rocket.diameter.meters }} m</p>
       <p><strong>Masa:</strong> {{ rocket.mass.kg }} kg</p>
       <img *ngIf="rocket.images[0]" [src]="rocket.images[0]" alt="{{ rocket.name }}" class="w-full h-48 object-cover mt-4 rounded">
+    </div>
+  </div>
+
+  <!-- Detalles del cohete seleccionado (bento grid básico) -->
+  <div *ngIf="selectedRocketDetails" class="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-gray-800 rounded-lg shadow-lg">
+    <div class="p-4">
+      <h2 class="text-2xl font-bold mb-2">{{ selectedRocketDetails.name }}</h2>
+      <p><strong>Descripción:</strong> {{ selectedRocketDetails.description }}</p>
+    </div>
+    <div class="p-4">
+      <p><strong>Altura:</strong> {{ selectedRocketDetails.height.meters }} m</p>
+      <p><strong>Diámetro:</strong> {{ selectedRocketDetails.diameter.meters }} m</p>
+      <p><strong>Masa:</strong> {{ selectedRocketDetails.mass.kg }} kg</p>
+    </div>
+    <!-- Espacio para imágenes y videos que tú añadirás -->
+    <div class="p-4 col-span-2">
+      <p><strong>Imágenes/Videos:</strong> (Añade aquí tus imágenes y videos)</p>
     </div>
   </div>
 </div>

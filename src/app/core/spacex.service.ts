@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Launch, Rocket } from './models/spacex.models';
 
 @Injectable({
@@ -20,6 +21,19 @@ export class SpacexService {
   }
 
   searchMission(name: string): Observable<Launch> {
-    return this.http.get<Launch>(`${this.baseUrl}/launches/query`, { params: { name } });
+    return this.http.post<{ docs: Launch[] }>(`${this.baseUrl}/launches/query`, {
+      query: {
+        $or: [
+          { name: { $regex: name, $options: 'i' } },
+          { 'payloads.name': { $regex: name, $options: 'i' } }
+        ]
+      },
+      options: {
+        limit: 5, // Aumenta para ver más resultados
+        sort: { date_utc: -1 }
+      }
+    }).pipe(
+      map(response => response.docs[0] || null)
+    );
   }
 }

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { SpacexService } from '../spacex.service';
 import { Launch, Rocket } from '../models/spacex.models';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -17,12 +18,10 @@ export class HomeComponent {
 
   constructor(private spacexService: SpacexService) {}
 
-  // Method to check if data is an array of rockets
   isRocketArray(data: Launch | Rocket[] | null): data is Rocket[] {
     return Array.isArray(data);
   }
 
-  // Method to check if data is a single launch
   isLaunch(data: Launch | Rocket[] | null): data is Launch {
     return data !== null && !Array.isArray(data);
   }

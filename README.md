@@ -1,6 +1,6 @@
 # SpaceX-WebApp
 
-Aplicación web desarrollada con **Angular 19** que consume la API de SpaceX para mostrar información sobre lanzamientos y cohetes. Utiliza **Tailwind CSS** para un diseño inspirado en la estética de SpaceX y X, con autenticación básica mediante `localStorage`.
+Aplicación web desarrollada con **Angular 19** que consume la API de SpaceX para mostrar información sobre lanzamientos y cohetes. Utiliza **Tailwind CSS** para un diseño inspirado en la estética de SpaceX, con autenticación básica mediante `localStorage`.
 
 ## Requisitos previos
 

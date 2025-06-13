@@ -13,11 +13,18 @@ export class SpacexService {
   constructor(private http: HttpClient) {}
 
   getRandomLaunch(): Observable<Launch> {
-    return this.http.get<Launch>(`${this.baseUrl}/launches/latest`);
+    return this.http.get<Launch[]>(`${this.baseUrl}/launches`).pipe(
+      map((launches: Launch[]) => {
+        const randomIndex = Math.floor(Math.random() * launches.length);
+        return launches[randomIndex];
+      })
+    );
   }
 
   getRockets(): Observable<Rocket[]> {
-    return this.http.get<Rocket[]>(`${this.baseUrl}/rockets`);
+    return this.http.get<Rocket[]>(`${this.baseUrl}/rockets`).pipe(
+      map(res => res || [])
+    );
   }
 
   searchMission(name: string): Observable<Launch> {

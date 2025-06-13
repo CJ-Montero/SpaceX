@@ -23,7 +23,8 @@ export class HomeComponent implements OnInit {
   constructor(private spacexService: SpacexService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this.listRockets(); // Cargar cohetes al iniciar
+    console.log('Componente iniciado');
+    this.listRockets();
   }
 
   isRocketArray(data: Launch | Rocket[] | null): data is Rocket[] {
@@ -36,8 +37,11 @@ export class HomeComponent implements OnInit {
 
   getRandomLaunch() {
     this.spacexService.getRandomLaunch().subscribe({
-      next: (res: Launch) => this.data = res,
-      error: (err: any) => console.error('Error fetching launch:', err)
+      next: (res: Launch) => {
+        console.log('Lanzamiento aleatorio seleccionado:', res);
+        this.data = res;
+      },
+      error: (err: any) => console.error('Error fetching random launch:', err)
     });
   }
 
@@ -55,15 +59,21 @@ export class HomeComponent implements OnInit {
 
   searchMission() {
     this.spacexService.searchMission(this.missionName).subscribe({
-      next: (res: Launch) => this.data = res,
+      next: (res: Launch) => {
+        console.log('Misión encontrada:', res);
+        this.data = res;
+      },
       error: (err: any) => console.error('Error searching mission:', err)
     });
   }
 
   onInputChange() {
-    if (this.missionName.length > 1) {
+    if (this.missionName.length > 0) {
       this.spacexService.getLaunchSuggestions(this.missionName).subscribe({
-        next: (sugs: string[]) => this.suggestions = sugs.slice(0, 5),
+        next: (sugs: string[]) => {
+          console.log('Sugerencias:', sugs);
+          this.suggestions = sugs.slice(0, 5);
+        },
         error: (err: any) => console.error('Error fetching suggestions:', err)
       });
     } else {
@@ -72,6 +82,7 @@ export class HomeComponent implements OnInit {
   }
 
   selectSuggestion(suggestion: string) {
+    console.log('Sugerencia seleccionada:', suggestion);
     this.missionName = suggestion;
     this.suggestions = [];
     this.cdr.detectChanges();
@@ -85,19 +96,22 @@ export class HomeComponent implements OnInit {
       } else {
         this.filteredRockets = [...this.data];
       }
+      console.log('Cohetes filtrados:', this.filteredRockets);
     }
   }
 
   toggleRocketMenu() {
+    console.log('Toggle menú cohetes:', !this.rocketMenuOpen);
     this.rocketMenuOpen = !this.rocketMenuOpen;
   }
 
   selectRocket(rocket: string) {
+    console.log('Seleccionado cohete:', rocket);
     this.selectedRocket = rocket;
     this.rocketMenuOpen = false;
     this.filterRocket();
     if (this.isRocketArray(this.data) && this.selectedRocket) {
-      this.selectedRocketDetails = this.data.find(r => r.name === this.selectedRocket) || null;
+      this.selectedRocketDetails = this.data.find(r => r.name.includes(this.selectedRocket)) || null;
       console.log('Detalles del cohete seleccionado:', this.selectedRocketDetails);
     } else {
       this.selectedRocketDetails = null;

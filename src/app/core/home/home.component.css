@@ -1,8 +1,12 @@
 .rocket-image {
-  max-width: 384px;
-  height: 192px;
+  width: 768px;
+  height: 384px;
 }
 .thumbnail-image {
   max-width: 256px;
   height: 128px;
+}
+.mission-details {
+  padding: 1rem;
+  background-color: #1f2a44;
 }

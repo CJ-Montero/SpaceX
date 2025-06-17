@@ -35,51 +35,62 @@
 <div class="p-6">
   <!-- Lanzamiento -->
   <div *ngIf="isLaunch(data)" class="bg-gray-800 p-6 rounded-lg shadow-lg">
-    <h2 class="text-2xl font-bold mb-4">{{ data.name }}</h2>
-    <p><strong>Fecha:</strong> {{ data.date_utc | date:'medium' }}</p>
-    <p><strong>Detalles:</strong> {{ data.details || 'Sin detalles disponibles' }}</p>
-    <p><strong>Éxito:</strong> {{ data.success ? 'Sí' : 'No' }}</p>
-    <div class="mt-6">
-      <h3 class="text-lg font-semibold mb-2">Insignia de la misión</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="flex items-center justify-center bg-gray-700 p-4 rounded-lg shadow-md">
-          <img *ngIf="data.links?.patch?.small" [src]="data.links?.patch?.small || 'assets/images/default_patch.webp'" (error)="onImageError($event)" alt="Mission Patch" class="w-32 h-32 rounded">
+    <h2 class="text-2xl font-bold mb-4 text-white">{{ data.name }}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Cajón de Insignia -->
+      <div class="bg-blue-600 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-blue-800 border-2 border-gray-400 transition duration-300">
+        <h3 class="text-lg font-semibold mb-2 text-white">Insignia de la misión</h3>
+        <div class="flex items-center justify-center">
+          <img *ngIf="data.links?.patch?.small" [src]="data.links?.patch?.small || 'assets/images/default_patch.webp'" (error)="onImageError($event)" alt="Mission Patch" class="w-64 h-64 rounded">
         </div>
       </div>
+      <!-- Cajón de Detalles -->
+      <div class="bg-teal-600 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-teal-800 border-2 border-gray-400 transition duration-300">
+        <h3 class="text-lg font-semibold mb-2 text-white">Detalles de la misión</h3>
+        <p class="text-white"><strong>Fecha:</strong> {{ data.date_utc | date:'medium' }}</p>
+        <p class="text-white"><strong>Detalles:</strong> {{ data.details || 'Sin detalles disponibles' }}</p>
+      </div>
+      <!-- Cajón de Éxito -->
+      <div class="bg-green-600 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-green-800 border-2 border-gray-400 transition duration-300">
+        <h3 class="text-lg font-semibold mb-2 text-white">Éxito</h3>
+        <p class="text-white">{{ data.success ? 'Sí' : 'No' }}</p>
+      </div>
     </div>
-    <a *ngIf="data.links?.webcast" [href]="data.links?.webcast || '#'" target="_blank" class="text-orange-600 hover:underline mt-4 block">Ver Webcast</a>
+    <a *ngIf="data.links?.webcast" [href]="data.links?.webcast || '#'" target="_blank" class="text-orange-500 hover:underline mt-4 block">Ver Webcast</a>
   </div>
 
   <!-- Detalles del cohete seleccionado (Falcon 9 o Falcon Heavy) -->
   <div *ngIf="selectedRocketDetails" class="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-gray-800 rounded-lg shadow-lg">
-    <div class="p-4">
-      <h2 class="text-2xl font-bold mb-2">{{ selectedRocketDetails.name }}</h2>
-      <p><strong>Descripción:</strong> {{ selectedRocketDetails.description }}</p>
+    <div class="bg-purple-600 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-purple-800 border-2 border-gray-400 transition duration-300">
+      <h2 class="text-2xl font-bold mb-2 text-white">{{ selectedRocketDetails.name }}</h2>
+      <p class="text-white"><strong>Descripción:</strong> {{ selectedRocketDetails.description }}</p>
     </div>
-    <div class="p-4">
-      <p><strong>Altura:</strong> {{ selectedRocketDetails.height.meters }} m</p>
-      <p><strong>Diámetro:</strong> {{ selectedRocketDetails.diameter.meters }} m</p>
-      <p><strong>Masa:</strong> {{ selectedRocketDetails.mass.kg }} kg</p>
+    <div class="bg-indigo-600 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-indigo-800 border-2 border-gray-400 transition duration-300">
+      <p class="text-white"><strong>Altura:</strong> {{ selectedRocketDetails.height.meters }} m</p>
+      <p class="text-white"><strong>Diámetro:</strong> {{ selectedRocketDetails.diameter.meters }} m</p>
+      <p class="text-white"><strong>Masa:</strong> {{ selectedRocketDetails.mass.kg }} kg</p>
     </div>
-    <div class="p-4 col-span-2">
-      <h2 class="text-xl font-bold mb-2">Imágenes del {{ selectedRocketDetails.name }}</h2>
+    <div class="col-span-2 bg-blue-600 p-4 rounded-lg shadow-md hover:shadow-xl hover:border-blue-800 border-2 border-gray-400 transition duration-300">
+      <h2 class="text-xl font-bold mb-2 text-white">Imágenes del {{ selectedRocketDetails.name }}</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <img *ngIf="selectedRocketDetails.name === 'Falcon 9'" [src]="'assets/images/falcon9_1.webp'" (error)="onImageError($event)" alt="Falcon 9 Image 1" class="w-192 h-96 object-cover rounded">
         <img *ngIf="selectedRocketDetails.name === 'Falcon 9'" [src]="'assets/images/falcon9_2.webp'" (error)="onImageError($event)" alt="Falcon 9 Image 2" class="w-192 h-96 object-cover rounded">
-        <img *ngIf="selectedRocketDetails.name === 'Falcon Heavy'" [src]="'assets/images/falconheavy_1.webp'" (error)="onImageError($event)" alt="Falcon Heavy Image 1" class="w-96 h-48 object-cover rounded">
+        <img *ngIf="selectedRocketDetails.name === 'Falcon Heavy'" [src]="'assets/images/falconheavy_launch.webp'" (error)="onImageError($event)" alt="Falcon Heavy Launch" class="w-192 h-96 object-cover rounded">
+        <img *ngIf="selectedRocketDetails.name === 'Falcon Heavy'" [src]="'assets/images/falconheavy_side.webp'" (error)="onImageError($event)" alt="Falcon Heavy Side" class="w-192 h-96 object-cover rounded">
+        <img *ngIf="selectedRocketDetails.name === 'Falcon Heavy'" [src]="'assets/images/falconheavy_orbit.webp'" (error)="onImageError($event)" alt="Falcon Heavy Orbit" class="w-192 h-96 object-cover rounded">
       </div>
     </div>
   </div>
 
   <!-- Cohetes (vista de lista) -->
   <div *ngIf="isRocketArray(data) && !selectedRocketDetails" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    <div *ngFor="let rocket of filteredRockets" class="bg-gray-800 p-6 rounded-lg shadow-lg">
-      <h3 class="text-xl font-bold mb-2">{{ rocket.name }}</h3>
-      <p><strong>Descripción:</strong> {{ rocket.description }}</p>
-      <p><strong>Altura:</strong> {{ rocket.height.meters }} m</p>
-      <p><strong>Diámetro:</strong> {{ rocket.diameter.meters }} m</p>
-      <p><strong>Masa:</strong> {{ rocket.mass.kg }} kg</p>
-      <img [src]="'assets/images/' + rocket.name.toLowerCase().replace(' ', '_') + '_thumbnail.webp' || 'assets/images/default_rocket.webp'" (error)="onImageError($event)" alt="{{ rocket.name }}" class="w-64 h-32 object-cover mt-4 rounded">
+    <div *ngFor="let rocket of filteredRockets" class="bg-gray-700 p-6 rounded-lg shadow-md hover:shadow-xl hover:border-gray-500 border-2 border-gray-400 transition duration-300">
+      <h3 class="text-xl font-bold mb-2 text-white">{{ rocket.name }}</h3>
+      <p class="text-white"><strong>Descripción:</strong> {{ rocket.description }}</p>
+      <p class="text-white"><strong>Altura:</strong> {{ rocket.height.meters }} m</p>
+      <p class="text-white"><strong>Diámetro:</strong> {{ rocket.diameter.meters }} m</p>
+      <p class="text-white"><strong>Masa:</strong> {{ rocket.mass.kg }} kg</p>
+      <img [src]="'assets/images/' + rocket.name.toLowerCase().replace(' ', '_') + '_thumbnail.webp' || 'assets/images/default_rocket.webp'" (error)="onImageError($event)" alt="{{ rocket.name }}" class="w-192 h-96 object-cover mt-4 rounded">
     </div>
   </div>
 </div>

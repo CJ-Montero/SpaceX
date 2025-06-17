@@ -1,4 +1,5 @@
 export interface Launch {
+rocket: string|undefined;
   id: string;
   name: string;
   date_utc: string;

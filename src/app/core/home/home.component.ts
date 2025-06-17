@@ -139,4 +139,14 @@ export class HomeComponent implements OnInit {
     console.error('Error loading image:', imgElement.src);
     imgElement.src = 'assets/images/default_rocket.webp'; // Fallback image
   }
+
+  getRocketName(rocketId: string | undefined): string {
+    const rocketMap: { [key: string]: string } = {
+      'falcon1': 'Falcon 1',
+      'falcon9': 'Falcon 9',
+      'falconheavy': 'Falcon Heavy',
+      'falcon_heavy': 'Falcon Heavy', // Añadido para coincidir con la API
+    };
+    return rocketMap[rocketId?.toLowerCase() || ''] || 'No disponible';
+  }
 }

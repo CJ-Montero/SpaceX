@@ -61,4 +61,8 @@ export class SpacexService {
       map(response => response.docs.map(doc => doc.name).filter(name => name !== undefined))
     );
   }
+
+  getRocketDetails(id: string): Observable<Rocket> {
+    return this.http.get<Rocket>(`${this.baseUrl}/rockets/${id}`);
+  }
 }

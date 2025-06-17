@@ -39,8 +39,6 @@
     <p><strong>Fecha:</strong> {{ data.date_utc | date:'medium' }}</p>
     <p><strong>Detalles:</strong> {{ data.details || 'Sin detalles disponibles' }}</p>
     <p><strong>Éxito:</strong> {{ data.success ? 'Sí' : 'No' }}</p>
-
-    <!-- Grid aparte para la insignia de la misión -->
     <div class="mt-6">
       <h3 class="text-lg font-semibold mb-2">Insignia de la misión</h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -49,8 +47,24 @@
         </div>
       </div>
     </div>
-
     <a *ngIf="data.links?.webcast" [href]="data.links?.webcast || '#'" target="_blank" class="text-orange-600 hover:underline mt-4 block">Ver Webcast</a>
+  </div>
+
+  <!-- Detalles del cohete seleccionado (Falcon 9 o Falcon Heavy) -->
+  <div *ngIf="selectedRocketDetails" class="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-gray-800 rounded-lg shadow-lg">
+    <div class="p-4">
+      <h2 class="text-2xl font-bold mb-2">{{ selectedRocketDetails.name }}</h2>
+      <p><strong>Descripción:</strong> {{ selectedRocketDetails.description }}</p>
+    </div>
+    <div class="p-4">
+      <p><strong>Altura:</strong> {{ selectedRocketDetails.height.meters }} m</p>
+      <p><strong>Diámetro:</strong> {{ selectedRocketDetails.diameter.meters }} m</p>
+      <p><strong>Masa:</strong> {{ selectedRocketDetails.mass.kg }} kg</p>
+    </div>
+    <div class="p-4 col-span-2">
+      <h2 class="text-xl font-bold mb-2">Imagen del {{ selectedRocketDetails.name }}</h2>
+      <img *ngIf="selectedRocketDetails.images && selectedRocketDetails.images.length > 0" [src]="selectedRocketDetails.images[0]" alt="{{ selectedRocketDetails.name }}" class="w-full h-48 object-cover rounded">
+    </div>
   </div>
 
   <!-- Cohetes (vista de lista) -->
@@ -62,23 +76,6 @@
       <p><strong>Diámetro:</strong> {{ rocket.diameter.meters }} m</p>
       <p><strong>Masa:</strong> {{ rocket.mass.kg }} kg</p>
       <img *ngIf="rocket.images && rocket.images.length > 0" [src]="rocket.images[0]" alt="{{ rocket.name }}" class="w-full h-48 object-cover mt-4 rounded">
-    </div>
-  </div>
-
-  <!-- Detalles del cohete seleccionado (bento grid básico) -->
-  <div *ngIf="selectedRocketDetails" class="grid grid-cols-1 md:grid-cols-2 gap-4 p-6 bg-gray-800 rounded-lg shadow-lg">
-    <div class="p-4">
-      <h2 class="text-2xl font-bold mb-2">{{ selectedRocketDetails.name }}</h2>
-      <p><strong>Descripción:</strong> {{ selectedRocketDetails.description }}</p>
-    </div>
-    <div class="p-4">
-      <p><strong>Altura:</strong> {{ selectedRocketDetails.height.meters }} m</p>
-      <p><strong>Diámetro:</strong> {{ selectedRocketDetails.diameter.meters }} m</p>
-      <p><strong>Masa:</strong> {{ selectedRocketDetails.mass.kg }} kg</p>
-    </div>
-    <!-- Espacio para imágenes y videos que tú añadirás -->
-    <div class="p-4 col-span-2">
-      <p><strong>Imágenes/Videos:</strong> (Añade aquí tus imágenes y videos)</p>
     </div>
   </div>
 </div>

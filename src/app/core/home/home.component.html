@@ -64,9 +64,9 @@
     <div class="p-4 col-span-2">
       <h2 class="text-xl font-bold mb-2">Imágenes del {{ selectedRocketDetails.name }}</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <img *ngIf="selectedRocketDetails.name === 'Falcon 9'" [src]="'assets/images/falcon9_1.webp'" (error)="onImageError($event)" alt="Falcon 9 Image 1" class="w-full h-48 object-cover rounded">
-        <img *ngIf="selectedRocketDetails.name === 'Falcon 9'" [src]="'assets/images/falcon9_2.webp'" (error)="onImageError($event)" alt="Falcon 9 Image 2" class="w-full h-48 object-cover rounded">
-        <img *ngIf="selectedRocketDetails.name === 'Falcon Heavy'" [src]="'assets/images/falconheavy_1.webp'" (error)="onImageError($event)" alt="Falcon Heavy Image 1" class="w-full h-48 object-cover rounded">
+        <img *ngIf="selectedRocketDetails.name === 'Falcon 9'" [src]="'assets/images/falcon9_1.webp'" (error)="onImageError($event)" alt="Falcon 9 Image 1" class="w-192 h-96 object-cover rounded">
+        <img *ngIf="selectedRocketDetails.name === 'Falcon 9'" [src]="'assets/images/falcon9_2.webp'" (error)="onImageError($event)" alt="Falcon 9 Image 2" class="w-192 h-96 object-cover rounded">
+        <img *ngIf="selectedRocketDetails.name === 'Falcon Heavy'" [src]="'assets/images/falconheavy_1.webp'" (error)="onImageError($event)" alt="Falcon Heavy Image 1" class="w-96 h-48 object-cover rounded">
       </div>
     </div>
   </div>
@@ -79,7 +79,7 @@
       <p><strong>Altura:</strong> {{ rocket.height.meters }} m</p>
       <p><strong>Diámetro:</strong> {{ rocket.diameter.meters }} m</p>
       <p><strong>Masa:</strong> {{ rocket.mass.kg }} kg</p>
-      <img [src]="'assets/images/' + rocket.name.toLowerCase().replace(' ', '_') + '_thumbnail.webp' || 'assets/images/default_rocket.webp'" (error)="onImageError($event)" alt="{{ rocket.name }}" class="w-full h-48 object-cover mt-4 rounded">
+      <img [src]="'assets/images/' + rocket.name.toLowerCase().replace(' ', '_') + '_thumbnail.webp' || 'assets/images/default_rocket.webp'" (error)="onImageError($event)" alt="{{ rocket.name }}" class="w-64 h-32 object-cover mt-4 rounded">
     </div>
   </div>
 </div>

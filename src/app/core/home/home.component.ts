@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
       next: (res: Launch) => {
         console.log('Lanzamiento aleatorio seleccionado:', res);
         this.data = res;
+        this.cdr.detectChanges();
       },
       error: (err: any) => console.error('Error fetching random launch:', err)
     });
@@ -62,6 +63,7 @@ export class HomeComponent implements OnInit {
       next: (res: Launch) => {
         console.log('Misión encontrada:', res);
         this.data = res;
+        this.cdr.detectChanges();
       },
       error: (err: any) => console.error('Error searching mission:', err)
     });

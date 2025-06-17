@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Launch, Rocket } from './models/spacex.models';
 
@@ -13,8 +13,9 @@ export class SpacexService {
   constructor(private http: HttpClient) {}
 
   getRandomLaunch(): Observable<Launch> {
-    return this.http.get<Launch[]>(`${this.baseUrl}/launches`).pipe(
+    return this.http.get<Launch[]>(`${this.baseUrl}/launches?limit=100`).pipe(
       map((launches: Launch[]) => {
+        if (!launches || launches.length === 0) return {} as Launch;
         const randomIndex = Math.floor(Math.random() * launches.length);
         return launches[randomIndex];
       })
@@ -40,7 +41,7 @@ export class SpacexService {
         sort: { date_utc: -1 }
       }
     }).pipe(
-      map(response => response.docs[0] || null)
+      map(response => response.docs[0] || null as any as Launch)
     );
   }
 

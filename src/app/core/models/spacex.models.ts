@@ -2,16 +2,15 @@ export interface Launch {
   id: string;
   name: string;
   date_utc: string;
-  details: string | null;
-  success: boolean;
-  rocket: string;
-  links: {
-    patch: {
-      small: string | null;
-      large: string | null;
+  details?: string;
+  success?: boolean;
+  links?: {
+    patch?: {
+      small?: string;
     };
-    webcast: string | null;
+    webcast?: string;
   };
+  crew?: string[];
 }
 
 export interface Rocket {
@@ -21,5 +20,5 @@ export interface Rocket {
   height: { meters: number };
   diameter: { meters: number };
   mass: { kg: number };
-  images: string[];
+  images?: string[];
 }

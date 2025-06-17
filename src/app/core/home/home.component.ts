@@ -115,7 +115,6 @@ export class HomeComponent implements OnInit {
     if (this.isRocketArray(this.data) && this.selectedRocket) {
       this.selectedRocketDetails = this.data.find(r => r.name.includes(this.selectedRocket)) || null;
       console.log('Detalles del cohete seleccionado:', this.selectedRocketDetails);
-      // Si se selecciona Falcon 9, obtener detalles específicos
       if (this.selectedRocket === 'Falcon 9') {
         this.getFalcon9Details();
       }
@@ -125,7 +124,6 @@ export class HomeComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-  // Método para obtener detalles del Falcon 9
   getFalcon9Details() {
     this.spacexService.getRocketDetails('5e9d0d95eda69973a809d1ec').subscribe({
       next: (data: Rocket) => {
@@ -134,5 +132,11 @@ export class HomeComponent implements OnInit {
       },
       error: (err: any) => console.error('Error fetching Falcon 9 details:', err)
     });
+  }
+
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    console.error('Error loading image:', imgElement.src);
+    imgElement.src = 'assets/images/default_rocket.webp'; // Fallback image
   }
 }
